@@ -1,0 +1,212 @@
+---
+### Application
+# Uudet kohdat löytyvät haulla UUSI:
+# Poistettu MainPanelista tab-osio (kommentoitu)
+
+app:
+  citiusdemo:
+    name: Citius DEMO
+    abbreviation: cwdemo
+    requires:
+    - app: cwapps
+    - app: cwcore
+    icon: citiusdemoicon
+    version: 1.0.3
+    defaultSite: 3nm9
+    usernameAbbreviation:
+      abbreviation: demo
+      username: demo@citius.com
+
+  # Täällä määritellään applikaation perusväri; käytetään esim. toolbarissa; napeissa jne.
+  theme:
+    color: "#000000"
+    android:
+      fontFamily: Roboto light
+      brandPrimary: "#0071b8"
+    ios:
+      fontFamily: Avenir-Medium
+    style:
+      noteluokka:
+        color: "#7c7e7f"
+      strongluokka:
+        color: "#0071b8"
+        fontSize: 16px
+        fontWeight: "bold"
+        ios:
+          fontFamily: Avenir-Heavy
+        android:
+          fontFamily: Roboto
+
+### Views
+views:
+
+  # Login-ruudun ulkoasun määrittelyä (käydään ensin läpi Mikan kanssa)
+  login:
+    applicationImage: demo-login-applicationImage-transparent
+    backgroundColor:
+      ios: "#ffffff"
+      android: "#e1e7f6"
+    #backgroundImage:
+      #ios: demo-login-backgroundImage-transparent
+    repeatBackgroundImage: true
+    fieldBackgroundColor: "#ffffff"
+    fieldBorderColor: "#0071b8"
+    fieldBorderSize: 1
+    fieldTextColor: "#0071b8"
+    fieldTextDisabledColor: "#bbbdbf"
+    loginButtonBackgroundColor: "#0071b8"
+    loginButtonDisabledBackgroundColor: "#ffffff"
+    loginButtonTextColor: "#ffffff"
+    loginButtonDisabledTextColor: "#bbbdbf"
+
+  #Left Panel
+  leftPanel:
+    header:
+      backgroundColor: "#ffffff"
+      headerBackgroundColor:
+        ios: "#ffffff"
+        android: "#e1e7f6"
+      
+      headerImage: demo-menu-headerImage-transparent
+
+      #headerBackgroundImage:
+        #ios: demo-login-backgroundImage-transparent
+      #repeatHeaderBackgroundImage: true
+
+    mainmenu:
+      type: menu
+      title:
+        en: Citius DEMO Menu
+        fi: Citius DEMO valikko
+      items:
+
+        flightsitem:
+          title:
+            en: Flights
+            fi: Lennot
+          icon: materialcommunityicons:airplane-takeoff
+          listeners:
+            click: onFlightsClick
+
+        planesitem:
+          title:
+            fi: Lentokoneet
+            en: Airplanes
+          icon: ionicons:ios-plane
+          listeners:
+            click: onPlanesClick
+
+        aboutitem:
+          title:
+            en: About the Demo (testing)
+            fi: Tietoa demosta (testi)
+          # Tässä on käytetty Ionicin ikonia; "pakotettu" käyttämään kaikissa järjestelmissä samaa ikonia
+          icon: ionicons:ios-information-circle-outline
+          listeners:
+            click: onAboutClick
+
+  # Main Panel
+  mainPanel:
+
+    flights:
+      type: list
+      title:
+        en: Flights
+        fi: Lennot
+      icon: materialcommunityicons:airplane-takeoff
+      table: CWDEMO_Flight
+      csql: "/CWDEMO_Flight{\
+        DepartureTime,\
+        ICAO24Hex,\
+        PlaneCI.PhotoCI,\
+        PlaneCI.AirlineCI,\
+        DepartureStationCI,\
+        ArrivalStationCI,\
+        PlaneCI,\
+        ArrivalTime,\
+        FlightTime}\
+        .sort(DepartureTime-)"
+
+      left:
+        rows:
+        - field: PlaneCI.PhotoCI.IconBase64
+      body:
+        rows:
+        - field: DepartureTime
+          #UUSI: Muutettu luokan nimeksi
+          texttype: strongluokka
+        - field: ICAO24Hex
+          #UUSI: Muutettu luokan nimeksi
+          texttype: noteluokka
+          ellipsis: false
+        - field: DepartureStationCI
+          #UUSI: Muutettu luokan nimeksi
+          texttype: noteluokka
+          ellipsis: false
+      right: false
+
+      search:
+        searchWordFlight:
+          value: ".filter(ICAO24Hex~'%%searchWordFlight%%'¤DepartureStationCI.Name~'%%searchWordFlight%%')"
+
+    planes:
+      type: list
+      title:
+        fi: Lentokoneet
+        en: Airplanes
+      icon: ionicons:ios-plane
+      table: CWDEMO_Plane
+      csql: "/CWDEMO_Plane{\
+        PhotoCI,\
+        Registration+,\
+        ICAO24Hex,\
+        Make,\
+        Model,\
+        Built,\
+        DeliveryDate}"
+      left:
+        rows:
+        - field: PhotoCI.IconBase64
+      body:
+        rows:
+        - field: Registration
+          #UUSI: Muutettu luokan nimeksi
+          texttype: strongluokka
+        - field: ICAO24Hex
+          #UUSI: Muutettu luokan nimeksi
+          texttype: noteluokka
+          ellipsis: false
+        - field: Make
+          #UUSI: Muutettu luokan nimeksi
+          texttype: noteluokka
+          ellipsis: false
+        - field: Model
+          #UUSI: Muutettu luokan nimeksi
+          texttype: noteluokka
+          ellipsis: false
+      right: false
+      search:
+        searchWordPlane:
+          value: ".filter(ICAO24Hex~'%%searchWordPlane%%'¤DepartureStationCI.Name~'%%searchWordPlane%%')"
+
+    about:
+      type: page
+      title:
+        en: About the Demo (testing)
+        fi: Tietoa demosta (testi)
+      ci:
+        fi: cwdemo-636r
+        en: cwdemo-636r
+      icon: ionicons:ios-information-circle-outline
+      headerNumbering: false
+
+### Controllers
+controllers:
+  constructor:
+    url: about
+  onAboutClick:
+    url: about
+  onFlightsClick:
+    url: flights
+  onPlanesClick:
+    url: planes

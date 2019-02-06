@@ -1,0 +1,111 @@
+---
+### Application
+# Uudet kohdat löytyvät haulla UUSI:
+# Poistettu MainPanelista tab-osio (kommentoitu)
+
+app:
+  citiusdemo:
+    name: Citius DEMO
+    abbreviation: cwdemo
+    requires:
+    - app: cwapps
+    - app: cwcore
+    icon: citiusdemoicon
+    version: 1.0.1
+    defaultSite: 3nm9
+    usernameAbbreviation:
+      abbreviation: demo
+      username: demo@citius.com
+
+  # Täällä määritellään applikaation perusväri; käytetään esim. toolbarissa; napeissa jne.
+  theme:
+    color: "#000000"
+    android:
+      fontFamily: Roboto light
+      brandPrimary: "#0071b8"
+    ios:
+      fontFamily: Avenir-Medium
+    style:
+      noteluokka:
+        color: "#7c7e7f"
+      strongluokka:
+        color: "#0071b8"
+        fontSize: 16px
+        fontWeight: "bold"
+        ios:
+          fontFamily: Avenir-Heavy
+        android:
+          fontFamily: Roboto
+
+### Views
+views:
+
+  # Login-ruudun ulkoasun määrittelyä (käydään ensin läpi Mikan kanssa)
+  login:
+    applicationImage: demo-login-applicationImage-transparent
+    backgroundColor:
+      ios: "#ffffff"
+      android: "#e1e7f6"
+    #backgroundImage:
+      #ios: demo-login-backgroundImage-transparent
+    repeatBackgroundImage: true
+    fieldBackgroundColor: "#ffffff"
+    fieldBorderColor: "#0071b8"
+    fieldBorderSize: 1
+    fieldTextColor: "#0071b8"
+    fieldTextDisabledColor: "#bbbdbf"
+    loginButtonBackgroundColor: "#0071b8"
+    loginButtonDisabledBackgroundColor: "#ffffff"
+    loginButtonTextColor: "#ffffff"
+    loginButtonDisabledTextColor: "#bbbdbf"
+
+  #Left Panel
+  leftPanel:
+    header:
+      backgroundColor: "#ffffff"
+      headerBackgroundColor:
+        ios: "#ffffff"
+        android: "#e1e7f6"
+      
+      headerImage: demo-menu-headerImage-transparent
+
+      #headerBackgroundImage:
+        #ios: demo-login-backgroundImage-transparent
+      #repeatHeaderBackgroundImage: true
+
+    mainmenu:
+      type: menu
+      title:
+        en: Citius DEMO Menu
+        fi: Citius DEMO valikko
+      items:
+
+        aboutitem:
+          title:
+            en: About the Demo (testing)
+            fi: Tietoa demosta (testi)
+          # Tässä on käytetty Ionicin ikonia; "pakotettu" käyttämään kaikissa järjestelmissä samaa ikonia
+          icon: ionicons:ios-information-circle-outline
+          listeners:
+            click: onAboutClick
+
+  # Main Panel
+  mainPanel:
+
+    about:
+      type: page
+      title:
+        en: About the Demo (testing)
+        fi: Tietoa demosta (testi)
+      ci:
+        fi: cwdemo-636r
+        en: cwdemo-636r
+      icon: ionicons:ios-information-circle-outline
+      headerNumbering: false
+
+### Controllers
+controllers:
+  constructor:
+    url: about
+  onAboutClick:
+    url: about
